@@ -1,5 +1,5 @@
 name:                api-common
-version:             0.1.1.0
+version:             0.1.2.0
 github:              "learnew2/api-common"
 license:             BSD-3-Clause
 author:              "Ilya Zamaratskikh"
@@ -15,12 +15,15 @@ description:         Please see the README on GitHub at <https://github.com/lear
 dependencies:
 - base >= 4.7 && < 5
 - servant-client == 0.19
+- servant-server == 0.19.2
 - http-conduit == 2.3.8.1
 - aeson == 2.1.2.1
 - transformers == 0.5.6.2
 - mtl == 2.2.2
 - text == 2.0.2
 - bytestring == 0.11.5.2
+- http-types == 0.12.3
+- monad-logger == 0.3.40
 - servant == 0.19.1
 - keycloak-api
 

@@ -1,10 +1,14 @@
+{-# LANGUAGE FlexibleContexts  #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE RecordWildCards   #-}
 module Models.JSONError
   ( JSONError(..)
+  , sendJSONError
   ) where
 
+import           Control.Monad.Except
 import           Data.Aeson
+import           Servant
 
 data JSONError = JSONError
   { errorType    :: !String
@@ -18,3 +22,6 @@ instance ToJSON JSONError where
     , "error" .= errorMessage
     , "context" .= errorContext
     ]
+
+sendJSONError :: (MonadError ServerError m) => ServerError -> JSONError -> m a
+sendJSONError err body = throwError $ err { errBody = encode body }
