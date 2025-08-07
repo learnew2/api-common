@@ -18,3 +18,8 @@ type AuthAPI = "api" :> "auth" :> ReqBody '[JSON] GrantRequest :> Post '[JSON] G
   :<|> "api" :> "auth" :> "roles" :> AuthHeader :> Get '[JSON] [RealmRole]
   :<|> "api" :> "auth" :> "roles" :> AuthHeader :> ReqBody '[JSON] RoleCreateRequest :> Post '[JSON] ()
   :<|> "api" :> "auth" :> "roles" :> AuthHeader :> Capture "RoleName" Text :> Delete '[JSON] ()
+  :<|> "api" :> "auth" :> "capabilities" :> AuthHeader :> Get '[JSON] [Text]
+  :<|> "api" :> "auth" :> "login" :> Get '[JSON] ()
+  :<|> "api" :> "auth" :> "logout" :> Get '[JSON] ()
+  :<|> "api" :> "auth" :> "fail" :> Get '[JSON] ()
+  :<|> "api" :> "auth" :> "callback" :> QueryParam "code" Text :> QueryParam "state" Text :> Get '[JSON] ()
