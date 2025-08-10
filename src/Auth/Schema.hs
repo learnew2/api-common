@@ -27,7 +27,7 @@ type AuthAPI = "api" :> "auth" :> ReqBody '[JSON] GrantRequest :> Post '[JSON] G
   :<|> "api" :> "auth" :> "logout" :> Get '[JSON] ()
   :<|> "api" :> "auth" :> "fail" :> Get '[JSON] ()
   :<|> "api" :> "auth" :> "callback" :> QueryParam "code" Text :> QueryParam "state" Text :> Get '[JSON] ()
-  :<|> "api" :> "auth" :> "groups" :> AuthHeader -> QueryParam "page" Int :> Get '[JSON] [FoundGroup]
+  :<|> "api" :> "auth" :> "groups" :> AuthHeader :> QueryParam "page" Int :> Get '[JSON] [FoundGroup]
   :<|> "api" :> "auth" :> "groups" :> "all" :> AuthHeader :> Get '[JSON] [FoundGroup]
   :<|> "api" :> "auth" :> "group" :> GroupCapture :> "members" :> AuthHeader :> QueryParam "page" Int :> Get '[JSON] [BriefUser]
   :<|> "api" :> "auth" :> "group" :> GroupCapture :> "members" :> "all" :> AuthHeader :> Get '[JSON] [BriefUser]
