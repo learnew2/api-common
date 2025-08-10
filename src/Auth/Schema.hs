@@ -7,11 +7,15 @@ module Auth.Schema
   ) where
 
 import           Api
+import           Api.Keycloak.Models.Group
 import           Api.Keycloak.Models.Introspect
 import           Api.Keycloak.Models.Role
 import           Api.Keycloak.Models.Token
+import           Api.Keycloak.Models.User
 import           Data.Text
 import           Servant.API
+
+type GroupCapture = Capture "GroupName" Text
 
 type AuthAPI = "api" :> "auth" :> ReqBody '[JSON] GrantRequest :> Post '[JSON] GrantResponse
   :<|> "api" :> "auth" :> "validate" :> ReqBody '[JSON] Text :> AuthHeader :> Post '[JSON] IntrospectResponse
@@ -23,3 +27,7 @@ type AuthAPI = "api" :> "auth" :> ReqBody '[JSON] GrantRequest :> Post '[JSON] G
   :<|> "api" :> "auth" :> "logout" :> Get '[JSON] ()
   :<|> "api" :> "auth" :> "fail" :> Get '[JSON] ()
   :<|> "api" :> "auth" :> "callback" :> QueryParam "code" Text :> QueryParam "state" Text :> Get '[JSON] ()
+  :<|> "api" :> "auth" :> "groups" :> AuthHeader -> QueryParam "page" Int :> Get '[JSON] [FoundGroup]
+  :<|> "api" :> "auth" :> "groups" :> "all" :> AuthHeader :> Get '[JSON] [FoundGroup]
+  :<|> "api" :> "auth" :> "group" :> GroupCapture :> "members" :> AuthHeader :> QueryParam "page" Int :> Get '[JSON] [BriefUser]
+  :<|> "api" :> "auth" :> "group" :> GroupCapture :> "members" :> "all" :> AuthHeader :> Get '[JSON] [BriefUser]

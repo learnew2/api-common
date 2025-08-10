@@ -5,6 +5,5 @@ packages:
 - .
 
 extra-deps:
-- servant-js-0.9.4.2@sha256:c090c1c0d08f9a58c2c0e2b333ad385fe158767b95f4d011fc88e31129415f10,3571
 - git: https://github.com/learnew2/keycloak-api.git
-  commit: 083610bf6c0e8e6d1d293079826fa9c351532344
+  commit: acb22488300297f348668a14aad8731d7c842bfa
