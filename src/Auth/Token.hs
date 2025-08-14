@@ -52,22 +52,20 @@ requireManyRealmRoles token rolesMap = do
         pure t
       else sendJSONError err403 (JSONError "unauthorized" "Insufficent permissions" Null)
 
-genericTokenFunctions :: (ServiceEnvironment t, MonadReader t m) => (Loc -> LogSource -> LogLevel -> LogStr -> IO ()) -> (Text, Text) -> m (TokenVariableFunctions Text)
-genericTokenFunctions logF (cID, cSecret) = do
-  env <- asks $ getEnvFor AuthService
-  pure $ TokenFunctions
-    { tokenValidateF=(\t -> runLoggingT (validate env t) logF)
-    , tokenIssueF=runLoggingT (issue env) logF } where
-  validate :: (MonadIO m, MonadLogger m) => ClientEnv -> Text -> m Bool
-  validate env token = do
+genericTokenFunctions :: (Loc -> LogSource -> LogLevel -> LogStr -> IO ()) -> (Text, Text) -> ClientEnv -> TokenVariableFunctions Text
+genericTokenFunctions logF (cID, cSecret) env = TokenFunctions
+    { tokenValidateF=(\t -> runLoggingT (validate t) logF)
+    , tokenIssueF=runLoggingT issue logF } where
+  validate :: (MonadIO m, MonadLogger m) => Text -> m Bool
+  validate token = do
     r <- (liftIO . flip runClientM env) $ getTokenCapabilities (BearerWrapper token)
     case r of
       (Left e) -> do
         $(logDebug) $ pack $ "Failed to validate token: " <> show e
         return False
       (Right _) -> return True
-  issue :: (MonadIO m, MonadLogger m) => ClientEnv -> m (Either String Text)
-  issue env = do
+  issue :: (MonadIO m, MonadLogger m) => m (Either String Text)
+  issue = do
     r <- (liftIO . flip runClientM env) $ postGrantRequest (ClientCredentialsRequest {reqClientSecret=cSecret, reqClientID=cID})
     case r of
       (Left e) -> do
