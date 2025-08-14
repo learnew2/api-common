@@ -33,6 +33,7 @@ library
       Auth.Schema
       Auth.Token
       Models.JSONError
+      Service.Environment
   other-modules:
       Paths_api_common
   autogen-modules:
