@@ -6,4 +6,4 @@ packages:
 
 extra-deps:
 - git: https://github.com/learnew2/keycloak-api.git
-  commit: 706580bdf6c815fe000418bbaa0ffad99c0d0c3a
+  commit: 5a37ed7030fb05bc3e994135f3e6cac17dac274b

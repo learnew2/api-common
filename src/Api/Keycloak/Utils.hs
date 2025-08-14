@@ -22,8 +22,8 @@ unwrapError (Left e) = do
   sendJSONError err500 (JSONError "internalError" "Internal server error" Null)
 unwrapError (Right a) = pure a
 
-withTokenVariable' :: (MonadIO m, HasTokenVariable t a, MonadReader t m, MonadError ServerError m, MonadLogger m) => (a -> m b) -> m b
+withTokenVariable' :: (MonadIO m, HasTokenVariable t, MonadReader t m, MonadError ServerError m, MonadLogger m) => (a -> m b) -> m b
 withTokenVariable' f = withTokenVariable f >>= unwrapError
 
-withTokenVariable'' :: (MonadIO m, HasTokenVariable t a, MonadReader t m, MonadError ServerError m, MonadLogger m, Show e) => (a -> m (Either e b)) -> m b
+withTokenVariable'' :: (MonadIO m, HasTokenVariable t, MonadReader t m, MonadError ServerError m, MonadLogger m, Show e) => (a -> m (Either e b)) -> m b
 withTokenVariable'' f = withTokenVariable' f >>= unwrapError

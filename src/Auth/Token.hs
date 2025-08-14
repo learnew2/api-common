@@ -28,22 +28,22 @@ import           Servant.Client
 import           Servant.Server
 import           Service.Environment
 
-lookupToken :: (MonadIO m, MonadLogger m, HasTokenVariable s Text, ServiceEnvironment s, MonadReader s m, MonadError ServerError m) => Text -> m I.IntrospectResponse
+lookupToken :: (MonadIO m, MonadLogger m, HasTokenVariable s, ServiceEnvironment s, MonadReader s m, MonadError ServerError m) => Text -> m I.IntrospectResponse
 lookupToken token = do
   env <- asks $ getEnvFor AuthService
   withTokenVariable'' $ \t -> (liftIO . flip runClientM env) (postValidateRequest token (BearerWrapper t))
 
-requireToken :: (MonadIO m, MonadLogger m, HasTokenVariable s Text, ServiceEnvironment s, MonadReader s m, MonadError ServerError m) => Text -> m I.IntrospectResponse
+requireToken :: (MonadIO m, MonadLogger m, HasTokenVariable s, ServiceEnvironment s, MonadReader s m, MonadError ServerError m) => Text -> m I.IntrospectResponse
 requireToken token = do
   r <- lookupToken token
   case r of
     I.InactiveToken -> sendJSONError err401 (JSONError "unauthorized" "Inactive token" Null)
     d@(I.ActiveToken {}) -> pure d
 
-requireRealmRoles :: (MonadIO m, MonadLogger m, HasTokenVariable s Text, ServiceEnvironment s, MonadReader s m, MonadError ServerError m) => Text -> [Text] -> m I.IntrospectResponse
+requireRealmRoles :: (MonadIO m, MonadLogger m, HasTokenVariable s, ServiceEnvironment s, MonadReader s m, MonadError ServerError m) => Text -> [Text] -> m I.IntrospectResponse
 requireRealmRoles token roles = requireManyRealmRoles token [roles]
 
-requireManyRealmRoles :: (MonadIO m, MonadLogger m, HasTokenVariable s Text, ServiceEnvironment s, MonadReader s m, MonadError ServerError m) => Text -> [[Text]] -> m I.IntrospectResponse
+requireManyRealmRoles :: (MonadIO m, MonadLogger m, HasTokenVariable s, ServiceEnvironment s, MonadReader s m, MonadError ServerError m) => Text -> [[Text]] -> m I.IntrospectResponse
 requireManyRealmRoles token rolesMap = do
   t <- requireToken token
   case t of
@@ -52,8 +52,10 @@ requireManyRealmRoles token rolesMap = do
         pure t
       else sendJSONError err403 (JSONError "unauthorized" "Insufficent permissions" Null)
 
-genericTokenFunctions :: (MonadLogger m, MonadIO m) => (Text, Text) -> ClientEnv -> TokenVariableFunctions Text m
-genericTokenFunctions (cID, cSecret) env = TokenFunctions {tokenValidateF=validate, tokenIssueF=issue} where
+genericTokenFunctions :: (Loc -> LogSource -> LogLevel -> LogStr -> IO ()) -> (Text, Text) -> ClientEnv -> TokenVariableFunctions Text
+genericTokenFunctions logF (cID, cSecret) env = TokenFunctions
+    { tokenValidateF=(\t -> runLoggingT (validate t) logF)
+    , tokenIssueF=runLoggingT issue logF } where
   validate :: (MonadIO m, MonadLogger m) => Text -> m Bool
   validate token = do
     r <- (liftIO . flip runClientM env) $ getTokenCapabilities (BearerWrapper token)
