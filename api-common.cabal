@@ -5,7 +5,7 @@ cabal-version: 2.2
 -- see: https://github.com/sol/hpack
 
 name:           api-common
-version:        0.1.2.9
+version:        0.1.3.0
 description:    Please see the README on GitHub at <https://github.com/learnew2/api-common#readme>
 homepage:       https://github.com/learnew2/api-common#readme
 bug-reports:    https://github.com/learnew2/api-common/issues
@@ -35,6 +35,7 @@ library
       Models.JSONError
       Service.Config
       Service.Environment
+      Service.Ssl
   other-modules:
       Paths_api_common
   autogen-modules:
@@ -46,6 +47,7 @@ library
       aeson ==2.1.2.1
     , base >=4.7 && <5
     , bytestring ==0.11.5.2
+    , connection ==0.3.1
     , exceptions ==0.10.5
     , http-conduit ==2.3.8.1
     , http-types ==0.12.3
@@ -74,6 +76,7 @@ test-suite api-common-test
     , api-common
     , base >=4.7 && <5
     , bytestring ==0.11.5.2
+    , connection ==0.3.1
     , exceptions ==0.10.5
     , http-conduit ==2.3.8.1
     , http-types ==0.12.3

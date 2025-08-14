@@ -5,16 +5,40 @@ module Service.Config
   ( requireEnv
   , requireKeycloakClient
   , requireEnvUrl
+  , requireServiceEnv
+  , lookupEnvDefault
   ) where
 
 import           Control.Monad.Catch
 import           Control.Monad.IO.Class
 import           Control.Monad.Logger
-import           Data.Text              (Text, pack, unpack)
+import           Data.Text                   (Text, pack, unpack)
+import           Network.HTTP.Client.Conduit
 import           Servant.Client
+import           Service.Ssl
 import           System.Environment
 import           System.Exit
 import           Text.Read
+
+lookupEnvDefault :: (Read a, MonadIO m) => String -> a -> m a
+lookupEnvDefault envKey def = do
+  v <- (liftIO . lookupEnv) envKey
+  case v of
+    Nothing -> pure def
+    (Just v') -> case readMaybe v' of
+      Nothing    -> pure def
+      (Just v'') -> pure v''
+
+requireServiceEnv :: (MonadIO m, MonadCatch m) => String -> LoggingT m (BaseUrl, Manager)
+requireServiceEnv prefix = let
+  urlKey = prefix <> "_URL"
+  sslKey = prefix <> "_IGNORE_SSL"
+
+  in do
+    ssl' <- lookupEnvDefault sslKey "0"
+    url' <- requireEnvUrl urlKey
+    mgr <- liftIO $ createSSLManager (ssl' == "1")
+    return (url', mgr)
 
 requireEnv :: (Read a, MonadIO m) => String -> (Maybe String -> LoggingT m a) -> LoggingT m a
 requireEnv envKey onFail = do
