@@ -20,13 +20,18 @@ import           System.Environment
 import           System.Exit
 import           Text.Read
 
-lookupEnvDefault :: (Read a, MonadIO m) => String -> a -> m a
+lookupEnvDefault :: (Read a, MonadIO m) => String -> a -> LoggingT m a
 lookupEnvDefault envKey def = do
+  $(logDebug) $ "Looking for variable " <> pack envKey
   v <- (liftIO . lookupEnv) envKey
   case v of
-    Nothing -> pure def
+    Nothing -> do
+      $(logDebug) $ "Variable " <> pack envKey <> " not found. Returning default..."
+      pure def
     (Just v') -> case readMaybe v' of
-      Nothing    -> pure def
+      Nothing    -> do
+        $(logDebug) $ "Can't parse variable" <> pack envKey <> ". Returning default..."
+        pure def
       (Just v'') -> pure v''
 
 requireServiceEnv :: (MonadIO m, MonadCatch m) => String -> LoggingT m (BaseUrl, Manager)
@@ -42,11 +47,16 @@ requireServiceEnv prefix = let
 
 requireEnv :: (Read a, MonadIO m) => String -> (Maybe String -> LoggingT m a) -> LoggingT m a
 requireEnv envKey onFail = do
+  $(logDebug) $ "Looking for variable " <> pack envKey
   v <- (liftIO . lookupEnv) envKey
   case v of
-    Nothing -> onFail Nothing
+    Nothing -> do
+      $(logDebug) $ "Variable " <> pack envKey <> " is not found."
+      onFail Nothing
     (Just v') -> case readMaybe v' of
-      Nothing    -> onFail (Just v')
+      Nothing    -> do
+        $(logDebug) $ "Can't parse variable " <> pack envKey
+        onFail (Just v')
       (Just v'') -> pure v''
 
 requireKeycloakClient :: (MonadIO m) => LoggingT m (Text, Text)
