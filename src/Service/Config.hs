@@ -7,11 +7,13 @@ module Service.Config
   , requireEnvUrl
   , requireServiceEnv
   , lookupEnvDefault
+  , requirePostgresString
   ) where
 
 import           Control.Monad.Catch
 import           Control.Monad.IO.Class
 import           Control.Monad.Logger
+import qualified Data.ByteString.Char8       as BS
 import           Data.Functor                ((<&>))
 import           Data.Text                   (Text, pack, unpack)
 import           Network.HTTP.Client.Conduit
@@ -20,6 +22,27 @@ import           Service.Ssl
 import           System.Environment
 import           System.Exit
 import           Text.Read
+
+requirePostgresString :: (MonadIO m) => LoggingT m BS.ByteString
+requirePostgresString = let
+  f :: (MonadIO m) => Text -> LoggingT m a
+  f msg = $(logError) msg >> (liftIO . exitWith) (ExitFailure 1)
+  in do
+  dbUser' <- requireEnv "POSTGRES_USER" (f "POSTGRES_USER is not set")
+  dbPass' <- requireEnv "POSTGRES_PASSWORD" (f "POSTGRES_PASSWORD is not set")
+  dbName' <- requireEnv "POSTGRES_DB" (f "POSTGRES_DB is not set")
+  dbHost' <- requireEnv "POSTGRES_HOST" (f "POSTGRES_HOST is not set")
+  dbPort' <- lookupEnvDefault "POSTGRES_PORT" "5432"
+  (return . BS.pack) $ "user=" <>
+      dbUser' <>
+      " password=" <>
+      dbPass' <>
+      " host=" <>
+      dbHost' <>
+      " port=" <>
+      dbPort' <>
+      " dbname=" <>
+      dbName'
 
 lookupEnvDefault :: (Read a, MonadIO m) => String -> a -> LoggingT m a
 lookupEnvDefault envKey def = do
