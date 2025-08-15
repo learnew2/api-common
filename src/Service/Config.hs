@@ -12,6 +12,7 @@ module Service.Config
 import           Control.Monad.Catch
 import           Control.Monad.IO.Class
 import           Control.Monad.Logger
+import           Data.Functor                ((<&>))
 import           Data.Text                   (Text, pack, unpack)
 import           Network.HTTP.Client.Conduit
 import           Servant.Client
@@ -45,8 +46,21 @@ requireServiceEnv prefix = let
     mgr <- liftIO $ createSSLManager (ssl' == "1")
     return (url', mgr)
 
-requireEnv :: (Read a, MonadIO m) => String -> (Maybe String -> LoggingT m a) -> LoggingT m a
+requireEnvText :: (MonadIO m) => String -> LoggingT m String -> LoggingT m Text
+requireEnvText e f = requireEnv e f <&> pack
+
+requireEnv :: (MonadIO m) => String -> LoggingT m String -> LoggingT m String
 requireEnv envKey onFail = do
+  $(logDebug) $ "Looking for variable " <> pack envKey
+  v <- (liftIO . lookupEnv) envKey
+  case v of
+    Nothing -> do
+      $(logDebug) $ "Variable " <> pack envKey <> " is not found."
+      onFail
+    (Just v') -> pure v'
+
+requireEnvRead :: (Read a, MonadIO m) => String -> (Maybe String -> LoggingT m a) -> LoggingT m a
+requireEnvRead envKey onFail = do
   $(logDebug) $ "Looking for variable " <> pack envKey
   v <- (liftIO . lookupEnv) envKey
   case v of
@@ -61,18 +75,18 @@ requireEnv envKey onFail = do
 
 requireKeycloakClient :: (MonadIO m) => LoggingT m (Text, Text)
 requireKeycloakClient = let
-  f :: (MonadIO m) => t -> LoggingT m a
-  f _ = do
+  f :: (MonadIO m) => LoggingT m a
+  f = do
     $(logError) "KEYCLOAK_CLIENT_SECRET or KEYCLOAK_CLIENT_ID is not provided"
     liftIO $ exitWith (ExitFailure 1)
   in do
-    id' <- requireEnv "KEYCLOAK_CLIENT_ID" f
-    secret' <- requireEnv "KEYCLOAK_CLIENT_SECRET" f
+    id' <- requireEnvText "KEYCLOAK_CLIENT_ID" f
+    secret' <- requireEnvText "KEYCLOAK_CLIENT_SECRET" f
     return (id', secret')
 
 requireEnvUrl :: (MonadIO m, MonadCatch m) => String -> LoggingT m BaseUrl
 requireEnvUrl envKey = do
-  rawUrl <- requireEnv envKey (\_ -> $(logError) ("Following URL is not provided: " <> pack envKey) >> (liftIO . exitWith) (ExitFailure 1))
+  rawUrl <- requireEnv envKey ($(logError) ("Following URL is not provided: " <> pack envKey) >> (liftIO . exitWith) (ExitFailure 1))
   parseRes <- try $ parseBaseUrl rawUrl
   case parseRes of
     (Left (e :: SomeException)) -> do
