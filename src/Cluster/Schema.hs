@@ -17,6 +17,5 @@ type ClusterManagerAPI = "api" :> "cluster" :> "nodes" :> AuthHeader :> QueryPar
   :<|> "api" :> "cluster" :> "nodes" :> NodeNameCapture :> AuthHeader :> Get '[JSON] ClusterNode
   :<|> "api" :> "cluster" :> "nodes" :> ReqBody '[JSON] ClusterNode :> AuthHeader :> Post '[JSON] ()
   :<|> "api" :> "cluster" :> "nodes" :> NodeNameCapture :> AuthHeader :> Delete '[JSON] ()
-  :<|> "api" :> "cluster" :> "network" :> AuthHeader :> Get '[JSON] Text
   :<|> "api" :> "cluster" :> "deploy" :> "node" :> AuthHeader :> Get '[JSON] ClusterNode
   :<|> "api" :> "cluster" :> "websockify" :> "config" :> Get '[PlainText] Text

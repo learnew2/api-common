@@ -3,7 +3,6 @@ module Cluster.Client
   , getNodeByName
   , createNode
   , deleteNodeByName
-  , getFreeNetworkName
   , getDeployNode
   , getWebsockifyConfig
   ) where
@@ -19,6 +18,5 @@ getPagedNodes
   :<|> getNodeByName
   :<|> createNode
   :<|> deleteNodeByName
-  :<|> getFreeNetworkName
   :<|> getDeployNode
   :<|> getWebsockifyConfig = client api
