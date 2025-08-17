@@ -5,7 +5,7 @@ cabal-version: 2.2
 -- see: https://github.com/sol/hpack
 
 name:           api-common
-version:        0.1.4.3
+version:        0.1.4.4
 description:    Please see the README on GitHub at <https://github.com/learnew2/api-common#readme>
 homepage:       https://github.com/learnew2/api-common#readme
 bug-reports:    https://github.com/learnew2/api-common/issues
@@ -58,6 +58,7 @@ library
     , keycloak-api
     , monad-logger ==0.3.40
     , mtl ==2.2.2
+    , network ==3.1.4.0
     , servant ==0.19.1
     , servant-client ==0.19
     , servant-server ==0.19.2
@@ -87,6 +88,7 @@ test-suite api-common-test
     , keycloak-api
     , monad-logger ==0.3.40
     , mtl ==2.2.2
+    , network ==3.1.4.0
     , servant ==0.19.1
     , servant-client ==0.19
     , servant-server ==0.19.2

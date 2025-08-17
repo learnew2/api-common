@@ -8,6 +8,7 @@ module Service.Config
   , requireServiceEnv
   , lookupEnvDefault
   , requirePostgresString
+  , requireRabbitMQCreds
   ) where
 
 import           Control.Monad.Catch
@@ -15,13 +16,28 @@ import           Control.Monad.IO.Class
 import           Control.Monad.Logger
 import qualified Data.ByteString.Char8       as BS
 import           Data.Functor                ((<&>))
+import           Data.Maybe
 import           Data.Text                   (Text, pack, unpack)
 import           Network.HTTP.Client.Conduit
+import           Network.Socket
 import           Servant.Client
 import           Service.Ssl
 import           System.Environment
 import           System.Exit
 import           Text.Read
+
+-- passing connection create string and function substitutes them
+requireRabbitMQCreds :: (String -> PortNumber -> Text -> Text -> Text -> IO a) -> LoggingT IO a
+requireRabbitMQCreds f' = let
+  f :: (MonadIO m) => Text -> LoggingT m a
+  f msg = $(logError) msg >> (liftIO . exitWith) (ExitFailure 1)
+  in do
+    rmqHost <- requireEnv "RABBITMQ_HOST" (f "RABBITMQ_HOST is not set")
+    rmqPort <- lookupEnvDefault "RABBITMQ_PORT" 5672
+    rmqUser <- requireEnvText "RABBITMQ_USER" (f "RABBITMQ_USER is not set")
+    rmqPass <- requireEnvText "RABBITMQ_PASS" (f "RABBITMQ_PASS is not set")
+    rmqVhost <- liftIO $ lookupEnv "RABBITMQ_VHOST" <&> (pack . fromMaybe "/")
+    liftIO $ f' rmqHost rmqPort rmqVhost rmqUser rmqPass
 
 requirePostgresString :: (MonadIO m) => LoggingT m BS.ByteString
 requirePostgresString = let
@@ -32,7 +48,7 @@ requirePostgresString = let
   dbPass' <- requireEnv "POSTGRES_PASSWORD" (f "POSTGRES_PASSWORD is not set")
   dbName' <- requireEnv "POSTGRES_DB" (f "POSTGRES_DB is not set")
   dbHost' <- requireEnv "POSTGRES_HOST" (f "POSTGRES_HOST is not set")
-  dbPort' <- lookupEnvDefault "POSTGRES_PORT" "5432"
+  dbPort' <- lookupEnvDefault "POSTGRES_PORT" 5432
   (return . BS.pack) $ "user=" <>
       dbUser' <>
       " password=" <>
@@ -40,7 +56,7 @@ requirePostgresString = let
       " host=" <>
       dbHost' <>
       " port=" <>
-      dbPort' <>
+      show dbPort' <>
       " dbname=" <>
       dbName'
 
