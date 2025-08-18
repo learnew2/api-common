@@ -6,6 +6,7 @@ module Deployment.Models.Deployment
   , DeploymentInstance(..)
   , DeploymentInstanceBrief(..)
   , PowerState(..)
+  , DeploymentStatus(..)
   ) where
 
 import           Data.Aeson
