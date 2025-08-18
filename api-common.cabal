@@ -5,7 +5,7 @@ cabal-version: 2.2
 -- see: https://github.com/sol/hpack
 
 name:           api-common
-version:        0.1.4.4
+version:        0.1.4.5
 description:    Please see the README on GitHub at <https://github.com/learnew2/api-common#readme>
 homepage:       https://github.com/learnew2/api-common#readme
 bug-reports:    https://github.com/learnew2/api-common/issues
@@ -36,6 +36,7 @@ library
       Cluster.Client
       Cluster.Models.Node
       Cluster.Schema
+      Deployment.Schema
       Models.JSONError
       Service.Config
       Service.Environment
@@ -59,6 +60,8 @@ library
     , monad-logger ==0.3.40
     , mtl ==2.2.2
     , network ==3.1.4.0
+    , proxmox-api
+    , proxmox-deploy-toolkit
     , servant ==0.19.1
     , servant-client ==0.19
     , servant-server ==0.19.2
@@ -89,6 +92,8 @@ test-suite api-common-test
     , monad-logger ==0.3.40
     , mtl ==2.2.2
     , network ==3.1.4.0
+    , proxmox-api
+    , proxmox-deploy-toolkit
     , servant ==0.19.1
     , servant-client ==0.19
     , servant-server ==0.19.2

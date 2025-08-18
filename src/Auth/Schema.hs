@@ -16,6 +16,7 @@ import           Data.Text
 import           Servant.API
 
 type GroupCapture = Capture "GroupName" Text
+type UserIdCapture = Capture "UserId" Text
 
 type AuthAPI = "api" :> "auth" :> ReqBody '[JSON] GrantRequest :> Post '[JSON] GrantResponse
   :<|> "api" :> "auth" :> "validate" :> ReqBody '[JSON] Text :> AuthHeader :> Post '[JSON] IntrospectResponse
@@ -31,3 +32,5 @@ type AuthAPI = "api" :> "auth" :> ReqBody '[JSON] GrantRequest :> Post '[JSON] G
   :<|> "api" :> "auth" :> "groups" :> "all" :> AuthHeader :> Get '[JSON] [FoundGroup]
   :<|> "api" :> "auth" :> "group" :> GroupCapture :> "members" :> AuthHeader :> QueryParam "page" Int :> Get '[JSON] [BriefUser]
   :<|> "api" :> "auth" :> "group" :> GroupCapture :> "members" :> "all" :> AuthHeader :> Get '[JSON] [BriefUser]
+  :<|> "api" :> "auth" :> "user" :> UserIdCapture :> "groups" :> AuthHeader :> QueryParam "page" Int :> Get '[JSON] [FoundGroup]
+  :<|> "api" :> "auth" :> "user" :> UserIdCapture :> "groups" :> "all" :> AuthHeader :> Get '[JSON] [FoundGroup]
