@@ -5,15 +5,15 @@
 
 packages:
 - completed:
-    commit: d3e8302cb263bdda60d3ec8e4aebb16c14d4dfde
+    commit: 5cf7d4b6c26b4cf0901d66d7c6e37eb30a0f489d
     git: https://github.com/learnew2/keycloak-api.git
     name: keycloak-api
     pantry-tree:
-      sha256: 801a9e859ee2ae5ab44c28538320e9973ff164a65c8659cf8a6a570f935d532d
+      sha256: e1fae21d32fce704e565e1d792aa6e8ac914d451799e3976ccd3c99f919d191b
       size: 1213
-    version: 0.1.3.6
+    version: 0.1.3.7
   original:
-    commit: d3e8302cb263bdda60d3ec8e4aebb16c14d4dfde
+    commit: 5cf7d4b6c26b4cf0901d66d7c6e37eb30a0f489d
     git: https://github.com/learnew2/keycloak-api.git
 - completed:
     commit: 17d9d56aa5e14c88e7a29987dac3c1e20251f811
@@ -40,15 +40,15 @@ packages:
     git: https://github.com/learnew2/proxmox-fs-agent.git
     subdir: proxmox-fs-agent-api
 - completed:
-    commit: b4f1a8e3e19b20db2c9ea82b56bdf6ae092b081b
+    commit: 30ef21b42c8876dca0d518080cab92b31a395b3c
     git: https://github.com/learnew2/proxmox-deploy-toolkit.git
     name: proxmox-deploy-toolkit
     pantry-tree:
-      sha256: 7135d6180341d5dc143d61eeea54768adc84d32d865049f18b2323a23446c35c
+      sha256: ced0f8e84144184676b021328b9dab153830c555f296d146f9e5b02d595d2667
       size: 1431
-    version: 0.1.1.0
+    version: 0.1.1.1
   original:
-    commit: b4f1a8e3e19b20db2c9ea82b56bdf6ae092b081b
+    commit: 30ef21b42c8876dca0d518080cab92b31a395b3c
     git: https://github.com/learnew2/proxmox-deploy-toolkit.git
 snapshots:
 - completed:

@@ -6,7 +6,7 @@ packages:
 
 extra-deps:
 - git: https://github.com/learnew2/keycloak-api.git
-  commit: d3e8302cb263bdda60d3ec8e4aebb16c14d4dfde
+  commit: 5cf7d4b6c26b4cf0901d66d7c6e37eb30a0f489d
 - git: https://github.com/learnew2/proxmox-api.git
   commit: 17d9d56aa5e14c88e7a29987dac3c1e20251f811
 - git: https://github.com/learnew2/proxmox-fs-agent.git
@@ -14,4 +14,4 @@ extra-deps:
   subdirs:
   - proxmox-fs-agent-api
 - git: https://github.com/learnew2/proxmox-deploy-toolkit.git
-  commit: b4f1a8e3e19b20db2c9ea82b56bdf6ae092b081b
+  commit: 30ef21b42c8876dca0d518080cab92b31a395b3c
