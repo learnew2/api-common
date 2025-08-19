@@ -35,4 +35,4 @@ type DeploymentAPI = "api" :> "deployment" :> "templates" :> QueryParam "page" I
   :<|> "api" :> "deployment" :> "vm" :> Capture "VmPort" Text :> "power" :> Get '[JSON] PowerState
   :<|> "api" :> "deployment" :> "vm" :> Capture "VmPort" Text :> "power" :> "switch" :> Get '[JSON] PowerState
   :<|> "api" :> "deployment" :> "vm" :> Capture "VmPort" Text :> "networks" :> Get '[JSON] (M.Map String String)
-  :<|> "api" :> "deployment" :> "vmport" :> "access" :> Capture "VmPort" Text :> AuthHeader :> Get '[JSON] ()
+  :<|> "api" :> "deployment" :> "vmport" :> "access" :> Header' '[Required] "X-VM-PORT" Text :> AuthHeader :> Get '[JSON] ()
