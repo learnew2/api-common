@@ -73,7 +73,7 @@ instance ToJSON DeploymentTemplate where
     , "existingNetworks" .= templateExistingNetworks
     ]
 
-data DeploymentStatus = Deploying | Deployed | Destroying deriving (Show, Eq)
+data DeploymentStatus = Created | Deploying | Deployed | Destroying deriving (Show, Eq)
 
 instance ToJSON DeploymentStatus where
   toJSON Deploying  = "deploying"
