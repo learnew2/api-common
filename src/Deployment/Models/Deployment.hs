@@ -73,17 +73,21 @@ instance ToJSON DeploymentTemplate where
     , "existingNetworks" .= templateExistingNetworks
     ]
 
-data DeploymentStatus = Created | Deploying | Deployed | Destroying deriving (Show, Eq)
+data DeploymentStatus = Created | Deploying | Deployed | Destroying | Failed deriving (Show, Eq)
 
 instance ToJSON DeploymentStatus where
   toJSON Deploying  = "deploying"
   toJSON Deployed   = "deployed"
   toJSON Destroying = "destroying"
+  toJSON Created    = "created"
+  toJSON Failed     = "failed"
 
 instance FromJSON DeploymentStatus where
   parseJSON (String "deploying")  = pure Deploying
   parseJSON (String "deployed")   = pure Deployed
   parseJSON (String "destroying") = pure Destroying
+  parseJSON (String "created")    = pure Created
+  parseJSON (String "failed")     = pure Failed
   parseJSON _                     = fail "Invalid deployment status value"
 
 data DeploymentInstanceBrief = DeploymentInstanceBrief
