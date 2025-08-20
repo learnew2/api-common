@@ -31,4 +31,6 @@ postGrantRequest
   :<|> getPagedGroups
   :<|> getAllGroups
   :<|> getPagedGroupMembers
-  :<|> getAllGroupMembers = client api
+  :<|> getAllGroupMembers
+  :<|> getPagedUserGroups
+  :<|> getAllUserGroups = client api
