@@ -5,7 +5,7 @@ cabal-version: 2.2
 -- see: https://github.com/sol/hpack
 
 name:           api-common
-version:        0.1.5.9
+version:        0.1.6.0
 description:    Please see the README on GitHub at <https://github.com/learnew2/api-common#readme>
 homepage:       https://github.com/learnew2/api-common#readme
 bug-reports:    https://github.com/learnew2/api-common/issues
@@ -30,6 +30,7 @@ library
       Api.Keycloak.Utils
       Api.Redirect
       Api.Retry
+      Api.Utils
       Auth.Client
       Auth.Schema
       Auth.Token

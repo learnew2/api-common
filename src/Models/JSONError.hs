@@ -23,5 +23,11 @@ instance ToJSON JSONError where
     , "context" .= errorContext
     ]
 
+instance FromJSON JSONError where
+  parseJSON = withObject "JsonError" $ \v -> JSONError
+    <$> v .: "type"
+    <*> v .: "error"
+    <*> v .:? "context" .!= Null
+
 sendJSONError :: (MonadError ServerError m) => ServerError -> JSONError -> m a
 sendJSONError err body = throwError $ err { errBody = encode body }
