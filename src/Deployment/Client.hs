@@ -17,6 +17,9 @@ module Deployment.Client
   , getVMPortPower
   , switchVMPortPower
   , getVMPortNetworks
+  , callGroupDestroy
+  , callGroupPower
+  , setDeploymentInstancePower
   ) where
 
 import           Data.Proxy
@@ -36,11 +39,14 @@ getPagedTemplates
   :<|> deleteDeploymentTemplate
   :<|> patchDeploymentTemplate
   :<|> callGroupDeployment
+  :<|> callGroupDestroy
+  :<|> callGroupPower
   :<|> requestDeploymentVMID
   :<|> requestDeploymentDisplay
   :<|> getDeploymentTemplateInstances
   :<|> getMyTemplateInstances
   :<|> getDeploymentInstance
+  :<|> setDeploymentInstancePower
   :<|> getVMPortPower
   :<|> switchVMPortPower
   :<|> getVMPortNetworks
