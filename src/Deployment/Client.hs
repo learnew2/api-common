@@ -20,6 +20,7 @@ module Deployment.Client
   , callGroupDestroy
   , callGroupPower
   , setDeploymentInstancePower
+  , checkVMPortAccess
   ) where
 
 import           Data.Proxy
@@ -50,4 +51,4 @@ getPagedTemplates
   :<|> getVMPortPower
   :<|> switchVMPortPower
   :<|> getVMPortNetworks
-  :<|> _ = client api
+  :<|> checkVMPortAccess  = client api
