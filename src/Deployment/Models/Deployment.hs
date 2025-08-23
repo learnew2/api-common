@@ -118,6 +118,7 @@ data DeploymentInstance = DeploymentInstance
   , instanceDeployConfig :: !(Maybe DeployConfig)
   , instanceLogs         :: ![Text]
   , instanceVMLinks      :: !(M.Map Text Text)
+  , instanceVMPower      :: !(M.Map Text Bool)
   , instanceState        :: !DeploymentStatus
   , instanceUser         :: !Text
   } deriving (Show)
@@ -131,6 +132,7 @@ instance ToJSON DeploymentInstance where
     , "vmLinks" .= instanceVMLinks
     , "state" .= instanceState
     , "userId" .= instanceUser
+    , "vmPower" .= instanceVMPower
     ]
 
 instance FromJSON DeploymentInstance where
@@ -140,5 +142,6 @@ instance FromJSON DeploymentInstance where
     <*> v .:? "deployConfig"
     <*> v .:? "logs" .!= []
     <*> v .:? "vmLinks" .!= M.empty
+    <*> v .:? "vmPower" .!= M.empty
     <*> v .: "state"
     <*> v .: "userId"
