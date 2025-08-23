@@ -34,7 +34,7 @@ type DeploymentAPI = "api" :> "deployment" :> "templates" :> QueryParam "page" I
   :<|> "api" :> "deployment" :> "instances" :> "my" :> QueryParam "page" Int :> AuthHeader :> Get '[JSON] (PagedResponse [DeploymentInstanceBrief])
   :<|> "api" :> "deployment" :> "instances" :> Capture "DeploymentInstanceID" Text :> AuthHeader :> Get '[JSON] DeploymentInstance
   :<|> "api" :> "deployment" :> "instances" :> Capture "DeploymentInstanceID" Text :> "power" :> QueryParam "on" Bool :> AuthHeader :> Get '[JSON] ()
-  :<|> "api" :> "deployment" :> "vm" :> Capture "VmPort" Text :> "power" :> Get '[JSON] PowerState
-  :<|> "api" :> "deployment" :> "vm" :> Capture "VmPort" Text :> "power" :> "switch" :> Get '[JSON] PowerState
-  :<|> "api" :> "deployment" :> "vm" :> Capture "VmPort" Text :> "networks" :> Get '[JSON] (M.Map String String)
+  :<|> "api" :> "deployment" :> "vm" :> Capture "VmPort" Text :> "power" :> AuthHeader :> Get '[JSON] PowerState
+  :<|> "api" :> "deployment" :> "vm" :> Capture "VmPort" Text :> "power" :> "switch" :> AuthHeader :> Get '[JSON] PowerState
+  :<|> "api" :> "deployment" :> "vm" :> Capture "VmPort" Text :> "networks" :> AuthHeader :> Get '[JSON] (M.Map String String)
   :<|> "api" :> "deployment" :> "vmport" :> "access" :> Header' '[Required] "X-VM-PORT" Text :> AuthHeader :> Get '[JSON] ()
