@@ -5,15 +5,15 @@
 
 packages:
 - completed:
-    commit: 76940e6c0af2f4ff35b72aacc62ba6b70f739f67
+    commit: d8fa88a7d92487771cd0555e6e0d42a640f810a9
     git: https://github.com/learnew2/keycloak-api.git
     name: keycloak-api
     pantry-tree:
-      sha256: bc95b80564fb7baabbe7efe6d5320399cf29c4161b1f652aa5466f27afd238ce
+      sha256: 97106b50bf0b301d88e648ec09cdd2991472bb18aaff0f3b456ae37c8baa9c94
       size: 1213
-    version: 0.1.3.8
+    version: 0.1.3.9
   original:
-    commit: 76940e6c0af2f4ff35b72aacc62ba6b70f739f67
+    commit: d8fa88a7d92487771cd0555e6e0d42a640f810a9
     git: https://github.com/learnew2/keycloak-api.git
 - completed:
     commit: 1790cd081d15cd7171e476be67d1f564061c4e1f

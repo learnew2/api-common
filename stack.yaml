@@ -6,7 +6,7 @@ packages:
 
 extra-deps:
 - git: https://github.com/learnew2/keycloak-api.git
-  commit: 76940e6c0af2f4ff35b72aacc62ba6b70f739f67
+  commit: d8fa88a7d92487771cd0555e6e0d42a640f810a9
 - git: https://github.com/learnew2/proxmox-api.git
   commit: 1790cd081d15cd7171e476be67d1f564061c4e1f
 - git: https://github.com/learnew2/proxmox-fs-agent.git

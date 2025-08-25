@@ -34,3 +34,4 @@ type AuthAPI = "api" :> "auth" :> ReqBody '[JSON] GrantRequest :> Post '[JSON] G
   :<|> "api" :> "auth" :> "group" :> GroupCapture :> "members" :> "all" :> AuthHeader :> Get '[JSON] [BriefUser]
   :<|> "api" :> "auth" :> "user" :> UserIdCapture :> "groups" :> AuthHeader :> QueryParam "page" Int :> Get '[JSON] [FoundGroup]
   :<|> "api" :> "auth" :> "user" :> UserIdCapture :> "groups" :> "all" :> AuthHeader :> Get '[JSON] [FoundGroup]
+  :<|> "api" :> "auth" :> "user" :> UserIdCapture :> AuthHeader :> Get '[JSON] BriefUser
