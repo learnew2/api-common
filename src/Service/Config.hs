@@ -80,7 +80,7 @@ requireServiceEnv prefix = let
   sslKey = prefix <> "_IGNORE_SSL"
 
   in do
-    ssl' <- lookupEnvDefault sslKey "0"
+    ssl' <- liftIO $ lookupEnv sslKey <&> fromMaybe "0"
     url' <- requireEnvUrl urlKey
     mgr <- liftIO $ createSSLManager (ssl' == "1")
     return (url', mgr)
