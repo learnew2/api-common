@@ -116,6 +116,7 @@ data DeploymentInstance = DeploymentInstance
   { instanceTitle        :: !Text
   , instanceOf           :: !Int
   , instanceDeployConfig :: !(Maybe DeployConfig)
+  , instanceNetworkMap   :: !(Maybe (M.Map String String))
   , instanceLogs         :: ![Text]
   , instanceVMLinks      :: !(M.Map Text Text)
   , instanceVMPower      :: !(M.Map Text Bool)
@@ -128,6 +129,7 @@ instance ToJSON DeploymentInstance where
     [ "title" .= instanceTitle
     , "parentTemplateId" .= instanceOf
     , "deployConfig" .= instanceDeployConfig
+    , "networkMap" .= instanceNetworkMap
     , "logs" .= instanceLogs
     , "vmLinks" .= instanceVMLinks
     , "state" .= instanceState
@@ -140,6 +142,7 @@ instance FromJSON DeploymentInstance where
     <$> v .: "title"
     <*> v .: "parentTemplateId"
     <*> v .:? "deployConfig"
+    <*> v .:? "networkMap"
     <*> v .:? "logs" .!= []
     <*> v .:? "vmLinks" .!= M.empty
     <*> v .:? "vmPower" .!= M.empty
