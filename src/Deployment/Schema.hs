@@ -11,6 +11,7 @@ import           Cluster.Models.Node
 import qualified Data.Map                              as M
 import           Data.Text
 import           Deployment.Models.Deployment
+import           Deployment.Models.Stats
 import           Proxmox.Deploy.Models.Config.Template
 import           Servant.API
 
@@ -38,3 +39,5 @@ type DeploymentAPI = "api" :> "deployment" :> "templates" :> QueryParam "page" I
   :<|> "api" :> "deployment" :> "vm" :> Capture "VmPort" Text :> "power" :> "switch" :> AuthHeader :> Get '[JSON] PowerState
   :<|> "api" :> "deployment" :> "vm" :> Capture "VmPort" Text :> "networks" :> AuthHeader :> Get '[JSON] (M.Map String String)
   :<|> "api" :> "deployment" :> "vmport" :> "access" :> Header' '[Required] "X-VM-PORT" Text :> AuthHeader :> Get '[JSON] ()
+  :<|> "api" :> "deployment" :> "deployments" :> DeploymentTemplateCapture :> "instances" :> "stats" :> AuthHeader :> Get '[JSON] DeploymentStats
+  :<|> "api" :> "deployment" :> "instances" :> Capture "DeploymentInstanceID" Text :> "destroy" :> AuthHeader :> Get '[JSON] ()
