@@ -35,4 +35,5 @@ postGrantRequest
   :<|> getAllGroupMembers
   :<|> getPagedUserGroups
   :<|> getAllUserGroups
-  :<|> getUserBriefInfo = client api
+  :<|> getUserBriefInfo
+  :<|> _ = client api
