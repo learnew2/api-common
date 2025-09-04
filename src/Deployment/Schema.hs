@@ -28,6 +28,7 @@ type DeploymentAPI = "api" :> "deployment" :> "templates" :> QueryParam "page" I
   :<|> "api" :> "deployment" :> "deployments" :> DeploymentTemplateCapture :> ReqBody '[JSON] DeploymentCreate :> AuthHeader :> Patch '[JSON] ()
   :<|> "api" :> "deployment" :> "deployments" :> DeploymentTemplateCapture :> "deploy" :> "group" :> QueryParam "group" Text :> AuthHeader :> Get '[JSON] ()
   :<|> "api" :> "deployment" :> "deployments" :> DeploymentTemplateCapture :> "destroy" :> "group" :> QueryParam "group" Text :> AuthHeader :> Get '[JSON] ()
+  :<|> "api" :> "deployment" :> "deployments" :> DeploymentTemplateCapture :> "snapshot" :> "group" :> QueryParam "group" Text :> QueryParam "snapname" Text :> QueryFlag "delete" :> QueryFlag "rollback" :> AuthHeader :> Get '[JSON] ()
   :<|> "api" :> "deployment" :> "deployments" :> DeploymentTemplateCapture :> "power" :> "group" :> QueryParam "group" Text :> QueryFlag "on" :> AuthHeader :> Get '[JSON] ()
   :<|> "api" :> "deployment" :> "vmid" :> NodeNameCapture :> Capture "DeploymentInstanceID" Text :> QueryParam "amount" Int :> AuthHeader :> Get '[JSON] [Int]
   :<|> "api" :> "deployment" :> "display" :> NodeNameCapture :> Capture "DeploymentInstanceID" Text :> QueryParam "amount" Int :> AuthHeader :> Get '[JSON] [Int]

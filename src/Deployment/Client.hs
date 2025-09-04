@@ -23,6 +23,7 @@ module Deployment.Client
   , checkVMPortAccess
   , getDeploymentInstancesStats
   , callInstanceDestroy
+  , callGroupSnapshot
   ) where
 
 import           Data.Proxy
@@ -43,6 +44,7 @@ getPagedTemplates
   :<|> patchDeploymentTemplate
   :<|> callGroupDeployment
   :<|> callGroupDestroy
+  :<|> callGroupSnapshot
   :<|> callGroupPower
   :<|> requestDeploymentVMID
   :<|> requestDeploymentDisplay
